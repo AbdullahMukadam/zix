@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Zix Banner](https://via.placeholder.com/1200x400/020202/FFFFFF?text=ZIX+-+The+Developer+Ecosystem)
+![Zix Banner](/frontend/public/og-image.PNG)
 
 **The all-in-one developer ecosystem. Build portfolios, generate CSS, explore UI components, and ship faster.**
 
