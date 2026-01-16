@@ -75,10 +75,6 @@
   }
 }
 
-/* Original Project Styles */
-
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Inter:wght@400;700;900&display=swap');
-
 @layer base {
   body {
     /* Merged with shadcn body rule, but keeping specific util classes if needed */
