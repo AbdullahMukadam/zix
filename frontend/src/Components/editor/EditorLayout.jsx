@@ -1,11 +1,11 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useTemplate } from '../../context/TemplateContext';
-import { useTemplates, useTemplateData } from '../../hooks/useTemplates';
-import DynamicForm from '../forms/DynamicForm';
-import PreviewIframe from './PreviewIframe';
-import ExportModal from './ExportModal';
+import { useTemplate } from '../../context/TemplateContext.jsx';
+import { useTemplates, useTemplateData } from '../../hooks/useTemplates.js';
+import DynamicForm from '../forms/DynamicForm.jsx';
+import PreviewIframe from './PreviewIframe.jsx';
+import ExportModal from './ExportModal.jsx';
 import { FiEye, FiEyeOff, FiDownload, FiArrowLeft, FiMonitor, FiTablet, FiSmartphone, FiSettings } from 'react-icons/fi';
 
 const EditorLayout = () => {

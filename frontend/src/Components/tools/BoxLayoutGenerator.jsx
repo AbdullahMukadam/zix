@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FiCopy, FiCheck, FiCode, FiGrid, FiLayout } from 'react-icons/fi';
-import { layoutPresets } from '../../data/tools/layouts';
+import { layoutPresets } from '../../data/tools/layouts.js';
 
 const BoxLayoutGenerator = () => {
   const [copied, setCopied] = useState(false);

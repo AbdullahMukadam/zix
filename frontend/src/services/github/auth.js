@@ -1,4 +1,4 @@
-import { GITHUB_CONFIG } from '../../config/github.config';
+import { GITHUB_CONFIG } from '../../config/github.config.js';
 
 export const initiateGitHubOAuth = () => {
   const params = new URLSearchParams({

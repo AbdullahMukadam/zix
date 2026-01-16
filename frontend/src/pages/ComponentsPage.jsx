@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FiSearch, FiCode, FiLayers } from 'react-icons/fi';
-import CSSComponents from '../components/ui-library/CSSComponents';
-import TailwindComponents from '../components/ui-library/TailwindComponents';
-import SEO from '../components/common/SEO';
+import CSSComponents from '../components/ui-library/CSSComponents.jsx';
+import TailwindComponents from '../components/ui-library/TailwindComponents.jsx';
+import SEO from '../components/common/SEO.jsx';
 
 const ComponentsPage = () => {
   const [activeTab, setActiveTab] = useState('tailwind');

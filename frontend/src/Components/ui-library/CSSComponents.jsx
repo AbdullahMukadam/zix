@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FiCopy, FiCheck } from 'react-icons/fi';
-import { cssComponents } from '../../data/components/css';
+import { cssComponents } from '../../data/components/css.js';
 
 const CSSComponentCard = ({ title, children, htmlCode, cssCode, category }) => {
   const [copiedHTML, setCopiedHTML] = useState(false);

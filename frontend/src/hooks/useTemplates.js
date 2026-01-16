@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import templatesRegistry from '../config/templates.json';
-import { fetchTemplateConfig, fetchAllTemplateContent } from '../services/github/templateFetcher';
-import { cacheTemplate, getCachedTemplate } from '../utils/storage';
+import { fetchTemplateConfig, fetchAllTemplateContent } from '../services/github/templateFetcher.js';
+import { cacheTemplate, getCachedTemplate } from '../utils/storage.js';
 
 export const useTemplates = () => {
   const [templates, setTemplates] = useState([]);

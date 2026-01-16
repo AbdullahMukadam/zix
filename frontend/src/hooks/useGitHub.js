@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import githubAPI from '../services/github/api';
-import { downloadZip } from '../services/export/zipper';
-import { deployToGitHub } from '../services/export/deployer';
-import { processTemplateFiles } from '../services/template/renderer';
+import githubAPI from '../services/github/api.js';
+import { downloadZip } from '../services/export/zipper.js';
+import { deployToGitHub } from '../services/export/deployer.js';
+import { processTemplateFiles } from '../services/template/renderer.js';
 
 export const useGitHub = () => {
   const [loading, setLoading] = useState(false);

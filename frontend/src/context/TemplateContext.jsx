@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
-import { saveDraft, getDraft, clearDraft } from '../utils/storage';
-import { extractDefaultValues, mergeWithDefaults } from '../utils/templateHelpers';
+import { saveDraft, getDraft, clearDraft } from '../utils/storage.js';
+import { extractDefaultValues, mergeWithDefaults } from '../utils/templateHelpers.js';
 
 const TemplateContext = createContext(null);
 

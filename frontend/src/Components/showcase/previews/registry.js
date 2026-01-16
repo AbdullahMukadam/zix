@@ -1,8 +1,8 @@
 // Import all preview components here
-import SpotlightCard from './SpotlightCard';
-import MagneticButton from './MagneticButton';
-import GradientBorderButton from './GradientBorderButton';
-import Handlebars from './Handlebars';
+import SpotlightCard from './SpotlightCard.jsx';
+import MagneticButton from './MagneticButton.jsx';
+import GradientBorderButton from './GradientBorderButton.jsx';
+import Handlebars from './Handlebars.jsx';
 
 // Map IDs from components.js to the actual component
 const previewRegistry = {

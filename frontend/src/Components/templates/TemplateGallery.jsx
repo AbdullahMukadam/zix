@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { useTemplates } from '../../hooks/useTemplates';
-import { useTemplate } from '../../context/TemplateContext';
-import TemplateCard from './TemplateCard';
-import TemplateFilters from './TemplateFilters';
+import { useTemplates } from '../../hooks/useTemplates.js';
+import { useTemplate } from '../../context/TemplateContext.jsx';
+import TemplateCard from './TemplateCard.jsx';
+import TemplateFilters from './TemplateFilters.jsx';
 import { FiSearch, FiLoader, FiAlertCircle } from 'react-icons/fi';
 
 const TemplateGallery = () => {

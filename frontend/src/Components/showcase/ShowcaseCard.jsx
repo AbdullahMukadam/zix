@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiCode, FiEye, FiTag } from 'react-icons/fi';
-import CodeBlock from './CodeBlock';
+import CodeBlock from './CodeBlock.jsx';
 import previewRegistry from './previews/registry'; // Import the registry
 
 const ShowcaseCard = ({ component }) => {

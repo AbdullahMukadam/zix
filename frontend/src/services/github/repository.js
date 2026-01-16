@@ -1,4 +1,4 @@
-import githubAPI from './api';
+import githubAPI from './api.js';
 
 export const createAndPushTemplate = async (
   templateFiles,

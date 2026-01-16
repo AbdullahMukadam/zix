@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { FiLayout, FiBox, FiActivity } from 'react-icons/fi';
-import GradientGenerator from '../components/tools/GradientGenerator';
-import BoxShadowGenerator from '../components/tools/BoxShadowGenerator';
-import BoxLayoutGenerator from '../components/tools/BoxLayoutGenerator';
-import SEO from '../components/common/SEO';
+import GradientGenerator from '../components/tools/GradientGenerator.jsx';
+import BoxShadowGenerator from '../components/tools/BoxShadowGenerator.jsx';
+import BoxLayoutGenerator from '../components/tools/BoxLayoutGenerator.jsx';
+import SEO from '../components/common/SEO.jsx';
 
 const ToolsPage = () => {
   const [activeTab, setActiveTab] = useState('gradient');

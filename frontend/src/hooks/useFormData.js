@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { validateForm } from '../utils/validators';
+import { validateForm } from '../utils/validators.js';
 
 export const useFormData = (initialData = {}, templateConfig = null) => {
   const [formData, setFormData] = useState(initialData);

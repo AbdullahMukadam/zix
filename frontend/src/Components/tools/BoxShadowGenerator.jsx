@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FiCopy, FiCheck, FiCode } from 'react-icons/fi';
-import { shadowPresets } from '../../data/tools/shadows';
+import { shadowPresets } from '../../data/tools/shadows.js';
 
 const BoxShadowGenerator = () => {
   const [copied, setCopied] = useState(false);

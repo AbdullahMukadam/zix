@@ -1,9 +1,9 @@
 
 import { useEffect } from 'react';
-import { useTemplate } from '../../context/TemplateContext';
-import { useFormData } from '../../hooks/useFormData';
-import FormStep from './FormStep';
-import FormControls from './FormControls';
+import { useTemplate } from '../../context/TemplateContext.jsx';
+import { useFormData } from '../../hooks/useFormData.js';
+import FormStep from './FormStep.jsx';
+import FormControls from './FormControls.jsx';
 
 const DynamicForm = ({ onFormComplete }) => {
   const {

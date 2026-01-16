@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import useGitHub from '../../hooks/useGitHub';
+import { useAuth } from '../../context/AuthContext.jsx';
+import useGitHub from '../../hooks/useGitHub.js';
 import { FiDownload, FiGithub, FiX, FiCheck, FiAlertCircle, FiTerminal, FiPackage } from 'react-icons/fi';
 
 const ExportModal = ({ onClose, template, templateFiles, formData }) => {

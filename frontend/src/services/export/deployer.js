@@ -1,5 +1,5 @@
-import { createAndPushTemplate } from '../github/repository';
-import { generateReadme } from '../template/builder';
+import { createAndPushTemplate } from '../github/repository.js';
+import { generateReadme } from '../template/builder.js';
 
 export const deployToGitHub = async (files, userData, repoName, templateType = 'html') => {
   try {

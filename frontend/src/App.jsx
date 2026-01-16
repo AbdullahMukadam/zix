@@ -1,17 +1,17 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import { TemplateProvider } from './context/TemplateContext';
-import LandingPage from './pages/LandingPage';
-import EditorLayout from './components/editor/EditorLayout';
-import GitHubCallback from './components/auth/GitHubCallback';
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import ToolsPage from './pages/ToolsPage';
-import ComponentsPage from './pages/ComponentsPage';
-import ProductivityPage from './pages/ProductivityPage';
-import ShowcasePage from './pages/ShowcasePage';
-import TemplateGallery from './components/templates/TemplateGallery';
+import { AuthProvider } from './context/AuthContext.jsx';
+import { TemplateProvider } from './context/TemplateContext.jsx';
+import LandingPage from './pages/LandingPage.jsx';
+import GitHubCallback from './components/auth/GitHubCallback.jsx';
+import Header from './components/layout/Header.jsx';
+import Footer from './components/layout/Footer.jsx';
+import ToolsPage from './pages/ToolsPage.jsx';
+import ComponentsPage from './pages/ComponentsPage.jsx';
+import ProductivityPage from './pages/ProductivityPage.jsx';
+import ShowcasePage from './pages/ShowcasePage.jsx';
+import TemplateGallery from './components/templates/TemplateGallery.jsx';
+import EditorLayout from './components/editor/EditorLayout.jsx';
 
 function App() {
   return (

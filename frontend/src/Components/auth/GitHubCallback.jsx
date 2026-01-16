@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { handleOAuthCallback } from '../../services/github/auth';
+import { useAuth } from '../../context/AuthContext.jsx';
+import { handleOAuthCallback } from '../../services/github/auth.js';
 import { FiLoader } from 'react-icons/fi';
 
 const GitHubCallback = () => {

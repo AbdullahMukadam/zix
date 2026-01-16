@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FiCopy, FiCheck } from 'react-icons/fi';
-import { tailwindComponents } from '../../data/components/tailwind';
+import { tailwindComponents } from '../../data/components/tailwind.jsx';
 
 const ComponentCard = ({ title, children, code, category }) => {
   const [copied, setCopied] = useState(false);

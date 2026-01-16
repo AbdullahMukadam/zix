@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FiCopy, FiCheck, FiPlus, FiTrash2, FiCode } from 'react-icons/fi';
-import { gradientPresets } from '../../data/tools/gradients';
+import { gradientPresets } from '../../data/tools/gradients.js';
 
 const GradientGenerator = () => {
   const [copied, setCopied] = useState(false);

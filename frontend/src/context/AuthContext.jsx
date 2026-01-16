@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import githubAPI from '../services/github/api';
-import { initiateGitHubOAuth, logout as logoutService } from '../services/github/auth';
+import githubAPI from '../services/github/api.js';
+import { initiateGitHubOAuth, logout as logoutService } from '../services/github/auth.js';
 
 const AuthContext = createContext(null);
 

@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
-import { renderTemplate } from '../../services/template/renderer';
-import { usePreviewUpdate } from '../../hooks/usePreviewUpdate';
+import { renderTemplate } from '../../services/template/renderer.js';
+import { usePreviewUpdate } from '../../hooks/usePreviewUpdate.js';
 import { FiLoader, FiAlertCircle } from 'react-icons/fi';
 
 const PreviewIframe = ({ templateFiles, formData, templateType = 'html' }) => {
