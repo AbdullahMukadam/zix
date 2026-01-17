@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FiCopy, FiCheck } from 'react-icons/fi';
 import { tailwindComponents } from '../../data/components/tailwind.jsx';
+import Pagination from '../common/Pagination.jsx';
+
+const ITEMS_PER_PAGE = 9;
 
 const ComponentCard = ({ title, children, code, category }) => {
   const [copied, setCopied] = useState(false);
@@ -53,32 +56,57 @@ const ComponentCard = ({ title, children, code, category }) => {
 };
 
 const TailwindComponents = ({ searchQuery, category }) => {
-  const filteredComponents = tailwindComponents.filter(comp => {
-    const matchesSearch = comp.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = category === 'all' || comp.category === category;
-    return matchesSearch && matchesCategory;
-  });
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const filteredComponents = useMemo(() => {
+    return tailwindComponents.filter(comp => {
+      const matchesSearch = comp.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = category === 'all' || comp.category === category;
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchQuery, category]);
+
+  // Reset to page 1 when filters change
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [searchQuery, category]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredComponents.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedComponents = filteredComponents.slice(startIndex, endIndex);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {filteredComponents.length > 0 ? (
-        filteredComponents.map(comp => (
-          <ComponentCard
-            key={comp.id}
-            title={comp.title}
-            category={comp.category}
-            code={comp.code}
-          >
-            {/* Render the preview component function */}
-            <comp.preview />
-          </ComponentCard>
-        ))
-      ) : (
-        <div className="col-span-full py-12 text-center text-util-gray">
-          <p className="text-lg font-medium">No components found matching your criteria.</p>
-        </div>
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {paginatedComponents.length > 0 ? (
+          paginatedComponents.map(comp => (
+            <ComponentCard
+              key={comp.id}
+              title={comp.title}
+              category={comp.category}
+              code={comp.code}
+            >
+              {/* Render the preview component function */}
+              <comp.preview />
+            </ComponentCard>
+          ))
+        ) : (
+          <div className="col-span-full py-12 text-center text-util-gray">
+            <p className="text-lg font-medium">No components found matching your criteria.</p>
+          </div>
+        )}
+      </div>
+      
+      {filteredComponents.length > 0 && (
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       )}
-    </div>
+    </>
   );
 };
 

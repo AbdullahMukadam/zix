@@ -1,17 +1,19 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSearch, FiGrid, FiList, FiZap } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
 import SEO from '../components/common/SEO.jsx';
 import ShowcaseCard from '../components/showcase/ShowcaseCard.jsx';
-import { showcaseComponents, categories, frameworks } from '../data/showcase/components.js';
+import Pagination from '../components/common/Pagination.jsx';
+import { showcaseComponents, categories } from '../data/showcase/components.js';
+
+const ITEMS_PER_PAGE = 6;
 
 const ShowcasePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
-  const [activeFramework, setActiveFramework] = useState('all');
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Filter components based on search, category, and framework
+  // Filter components based on search and category
   const filteredComponents = useMemo(() => {
     return showcaseComponents.filter((component) => {
       const matchesSearch = 
@@ -22,19 +24,27 @@ const ShowcasePage = () => {
       const matchesCategory = 
         activeCategory === 'all' || component.category === activeCategory;
 
-      const matchesFramework = 
-        activeFramework === 'all' || component.framework === activeFramework;
-
-      return matchesSearch && matchesCategory && matchesFramework;
+      return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, activeCategory, activeFramework]);
+  }, [searchQuery, activeCategory]);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredComponents.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedComponents = filteredComponents.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [searchQuery, activeCategory]);
 
   return (
     <div className="min-h-screen bg-[#020202] text-white pt-16 relative font-sans">
       <SEO
         title="Component Showcase"
-        description="Explore a curated collection of beautiful, interactive UI components. Copy-paste ready components for React, Tailwind, Framer Motion, and vanilla HTML/CSS."
-        keywords="ui components, react components, framer motion, tailwind css, component library, ui showcase"
+        description="Explore a curated collection of beautiful UI components, dashboards, hero sections, and more. Discover creative designs from talented creators around the world."
+        keywords="ui components, showcase, dashboards, hero sections, design inspiration, ui library"
       />
 
       {/* Background Grid */}
@@ -50,7 +60,7 @@ const ShowcasePage = () => {
             </h1>
             
             <p className="text-lg text-util-gray/60 max-w-xl leading-relaxed">
-              A curated collection of interactive UI components. Built with React, Framer Motion, and Tailwind CSS. Ready to copy-paste.
+              Discover beautiful UI components, dashboards, hero sections, and creative designs from talented creators worldwide.
             </p>
           </div>
         </div>
@@ -97,31 +107,32 @@ const ShowcasePage = () => {
 
       {/* Components Grid */}
       <div className="max-w-[1400px] mx-auto px-6 py-8">
-        {/* Results Count */}
-        <div className="mb-6">
+        {/* Results Count and Pagination Info */}
+        <div className="mb-6 flex items-center justify-between">
           <p className="text-sm text-util-gray/70">
-            Showing <span className="font-bold text-white">{filteredComponents.length}</span> component{filteredComponents.length !== 1 ? 's' : ''}
+            Showing <span className="font-bold text-white">{startIndex + 1}-{Math.min(endIndex, filteredComponents.length)}</span> of <span className="font-bold text-white">{filteredComponents.length}</span> component{filteredComponents.length !== 1 ? 's' : ''}
             {searchQuery && (
               <span> for "<span className="text-white">{searchQuery}</span>"</span>
             )}
           </p>
+          {totalPages > 1 && (
+            <p className="text-xs text-util-gray/50">
+              Page {currentPage} of {totalPages}
+            </p>
+          )}
         </div>
 
         {/* Components */}
         <AnimatePresence mode="wait">
-          {filteredComponents.length > 0 ? (
+          {paginatedComponents.length > 0 ? (
             <motion.div
-              key="grid"
+              key={`page-${currentPage}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className={
-                viewMode === 'grid'
-                  ? 'grid grid-cols-1 lg:grid-cols-2 gap-6'
-                  : 'flex flex-col gap-6'
-              }
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
             >
-              {filteredComponents.map((component) => (
+              {paginatedComponents.map((component) => (
                 <ShowcaseCard key={component.id} component={component} />
               ))}
             </motion.div>
@@ -144,7 +155,6 @@ const ShowcasePage = () => {
                 onClick={() => {
                   setSearchQuery('');
                   setActiveCategory('all');
-                  setActiveFramework('all');
                 }}
                 className="px-6 py-2.5 bg-white text-black font-bold text-sm rounded-lg hover:bg-util-gray transition-all"
               >
@@ -153,6 +163,15 @@ const ShowcasePage = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Pagination */}
+        {filteredComponents.length > 0 && (
+          <Pagination 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}
       </div>
     </div>
   );

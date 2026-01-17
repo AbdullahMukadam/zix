@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FiCopy, FiCheck, FiCode, FiPlus, FiTrash2, FiMove, FiMaximize2, FiRefreshCw, FiGrid, FiLayout, FiSidebar } from 'react-icons/fi';
 
 const VisualLayoutBuilder = () => {
-  const [copied, setCopied] = useState({ css: false, html: false });
-  const [exportFormat, setExportFormat] = useState('both'); // 'css', 'html', 'both'
+  const [copied, setCopied] = useState({ css: false, html: false, tailwind: false });
+  const [exportFormat, setExportFormat] = useState('both'); // 'css', 'html', 'tailwind', 'both'
   const canvasRef = useRef(null);
   
   // Layout state
@@ -216,6 +216,60 @@ const VisualLayoutBuilder = () => {
     return html;
   };
 
+  // Generate Tailwind Classes
+  const generateTailwind = () => {
+    // Container Classes
+    let containerClasses = `w-full min-h-[400px] `;
+    
+    // Display
+    if (containerProps.display === 'flex') {
+      containerClasses += `flex `;
+      
+      // Flex Direction
+      const dirMap = { 'row': 'flex-row', 'column': 'flex-col', 'row-reverse': 'flex-row-reverse', 'column-reverse': 'flex-col-reverse' };
+      containerClasses += `${dirMap[containerProps.flexDirection] || 'flex-row'} `;
+      
+      // Justify
+      const justifyMap = { 'flex-start': 'justify-start', 'center': 'justify-center', 'flex-end': 'justify-end', 'space-between': 'justify-between', 'space-around': 'justify-around' };
+      containerClasses += `${justifyMap[containerProps.justifyContent] || 'justify-start'} `;
+      
+      // Align
+      const alignMap = { 'flex-start': 'items-start', 'center': 'items-center', 'flex-end': 'items-end', 'stretch': 'items-stretch' };
+      containerClasses += `${alignMap[containerProps.alignItems] || 'items-start'} `;
+      
+      // Gap (arbitrary value)
+      containerClasses += `gap-[${containerProps.gap}px] `;
+      
+    } else if (containerProps.display === 'grid') {
+      containerClasses += `grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] `;
+      containerClasses += `gap-[${containerProps.gap}px] `;
+    } else {
+      containerClasses += `block relative `;
+    }
+    
+    // Padding & Background (arbitrary values)
+    containerClasses += `p-[${containerProps.padding}px] `;
+    containerClasses += `bg-[${containerProps.background}] `;
+    
+    let html = `<div class="${containerClasses.trim()}">\n`;
+    
+    boxes.forEach((box) => {
+      let boxClasses = ``;
+      
+      if (containerProps.display === 'absolute') {
+        boxClasses += `absolute top-[${box.y}px] left-[${box.x}px] `;
+      }
+      
+      boxClasses += `w-[${box.width}px] h-[${box.height}px] `;
+      boxClasses += `bg-[${box.color}] rounded-lg`;
+      
+      html += `  <div class="${boxClasses.trim()}"></div>\n`;
+    });
+    
+    html += `</div>`;
+    return html;
+  };
+
   // Copy handlers
   const copyToClipboard = (type) => {
     let textToCopy = '';
@@ -224,6 +278,8 @@ const VisualLayoutBuilder = () => {
       textToCopy = generateCSS();
     } else if (type === 'html') {
       textToCopy = generateHTML();
+    } else if (type === 'tailwind') {
+      textToCopy = generateTailwind();
     } else {
       textToCopy = `/* CSS */\n${generateCSS()}\n\n<!-- HTML -->\n${generateHTML()}`;
     }
@@ -364,7 +420,7 @@ const VisualLayoutBuilder = () => {
               </h3>
               
               <div className="flex bg-white/5 rounded-md p-0.5 border border-white/5">
-                 {['both', 'html', 'css'].map((format) => (
+                 {['both', 'html', 'css', 'tailwind'].map((format) => (
                    <button
                      key={format}
                      onClick={() => setExportFormat(format)}
@@ -380,7 +436,21 @@ const VisualLayoutBuilder = () => {
               </div>
            </div>
 
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+           <div className="grid grid-cols-1 gap-4">
+              {(exportFormat === 'both' || exportFormat === 'tailwind') && (
+                <div className="bg-[#020202] border border-white/10 rounded-lg overflow-hidden">
+                   <div className="flex items-center justify-between px-3 py-2 bg-white/5 border-b border-white/5">
+                      <span className="text-[10px] font-bold text-util-gray uppercase">Tailwind HTML</span>
+                      <button onClick={() => copyToClipboard('tailwind')} className="text-util-gray hover:text-white transition-colors">
+                        {copied.tailwind ? <FiCheck className="w-3 h-3 text-green-400" /> : <FiCopy className="w-3 h-3" />}
+                      </button>
+                   </div>
+                   <div className="p-3 overflow-x-auto max-h-40 custom-scrollbar">
+                     <code className="text-xs font-mono text-cyan-400 whitespace-pre">{generateTailwind()}</code>
+                   </div>
+                </div>
+              )}
+
               {(exportFormat === 'both' || exportFormat === 'html') && (
                 <div className="bg-[#020202] border border-white/10 rounded-lg overflow-hidden">
                    <div className="flex items-center justify-between px-3 py-2 bg-white/5 border-b border-white/5">

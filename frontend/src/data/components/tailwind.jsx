@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { FiCheck, FiX, FiGithub, FiTwitter, FiFacebook } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 
 export const tailwindCategories = [
   { id: 'all', label: 'All' },
@@ -76,6 +77,116 @@ export const tailwindComponents = [
         </button>
         <button className="p-3 bg-[#4267B2] hover:bg-[#4267B2]/90 text-white rounded-lg transition-colors">
           <FiFacebook className="w-5 h-5" />
+        </button>
+      </div>
+    )
+  },
+  {
+    id: 'btn-magnetic',
+    title: 'Magnetic Button',
+    category: 'buttons',
+    code: `import { motion } from 'framer-motion';
+import { useState, useRef } from 'react';
+
+export default function MagneticButton() {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const buttonRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!buttonRef.current) return;
+    const rect = buttonRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const distanceX = e.clientX - centerX;
+    const distanceY = e.clientY - centerY;
+    setPosition({ x: distanceX * 0.3, y: distanceY * 0.3 });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.button
+      ref={buttonRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: 'spring', stiffness: 150, damping: 15 }}
+      className="px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform"
+    >
+      Hover Me
+    </motion.button>
+  );
+}`,
+    preview: () => {
+      const [position, setPosition] = useState({ x: 0, y: 0 });
+      const buttonRef = useRef(null);
+
+      const handleMouseMove = (e) => {
+        if (!buttonRef.current) return;
+        const rect = buttonRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const distanceX = e.clientX - centerX;
+        const distanceY = e.clientY - centerY;
+        setPosition({ x: distanceX * 0.3, y: distanceY * 0.3 });
+      };
+
+      const handleMouseLeave = () => {
+        setPosition({ x: 0, y: 0 });
+      };
+
+      return (
+        <motion.button
+          ref={buttonRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          animate={{ x: position.x, y: position.y }}
+          transition={{ type: 'spring', stiffness: 150, damping: 15 }}
+          className="px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform"
+        >
+          Hover Me
+        </motion.button>
+      );
+    }
+  },
+  {
+    id: 'btn-gradient-border',
+    title: 'Gradient Border Button',
+    category: 'buttons',
+    code: `export default function GradientBorderButton() {
+  return (
+    <div className="relative group">
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+      <button className="relative px-7 py-4 bg-black rounded-lg leading-none flex items-center">
+        <span className="text-white font-bold">Click Me</span>
+      </button>
+    </div>
+  );
+}
+
+/* Add this to your CSS or Tailwind config */
+@keyframes tilt {
+  0%, 50%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1deg);
+  }
+  75% {
+    transform: rotate(-1deg);
+  }
+}
+
+.animate-tilt {
+  animation: tilt 10s infinite linear;
+}`,
+    preview: () => (
+      <div className="relative group">
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+        <button className="relative px-7 py-4 bg-black rounded-lg leading-none flex items-center">
+          <span className="text-white font-bold">Click Me</span>
         </button>
       </div>
     )
@@ -160,6 +271,81 @@ export const tailwindComponents = [
         </button>
       </div>
     )
+  },
+  {
+    id: 'card-spotlight',
+    title: 'Spotlight Card',
+    category: 'cards',
+    code: `import { useRef, useState } from "react";
+
+export default function SpotlightCard() {
+  const divRef = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e) => {
+    if (!divRef.current) return;
+    const div = divRef.current;
+    const rect = div.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <div
+      ref={divRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setOpacity(1)}
+      onMouseLeave={() => setOpacity(0)}
+      className="relative flex h-48 w-full max-w-sm flex-col items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-black px-8 py-16 shadow-2xl"
+    >
+      <div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+        style={{
+          opacity,
+          background: \`radial-gradient(600px circle at \${position.x}px \${position.y}px, rgba(255,255,255,0.1), transparent 40%)\`,
+        }}
+      />
+      <div className="relative z-10 text-center">
+        <h3 className="mb-2 text-xl font-bold text-white">Spotlight Effect</h3>
+        <p className="text-sm text-gray-400">Hover me!</p>
+      </div>
+    </div>
+  );
+}`,
+    preview: () => {
+      const divRef = useRef(null);
+      const [position, setPosition] = useState({ x: 0, y: 0 });
+      const [opacity, setOpacity] = useState(0);
+
+      const handleMouseMove = (e) => {
+        if (!divRef.current) return;
+        const div = divRef.current;
+        const rect = div.getBoundingClientRect();
+        setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+      };
+
+      return (
+        <div
+          ref={divRef}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={() => setOpacity(1)}
+          onMouseLeave={() => setOpacity(0)}
+          className="relative flex h-48 w-full max-w-sm flex-col items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-black px-8 py-16 shadow-2xl"
+        >
+          <div
+            className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+            style={{
+              opacity,
+              background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255,255,255,0.1), transparent 40%)`,
+            }}
+          />
+          <div className="relative z-10 text-center">
+            <h3 className="mb-2 text-xl font-bold text-white">Spotlight Effect</h3>
+            <p className="text-sm text-gray-400">Hover me!</p>
+          </div>
+        </div>
+      );
+    }
   },
   {
     id: 'inp-1',

@@ -3,8 +3,8 @@ import { FiCopy, FiCheck, FiPlus, FiTrash2, FiCode } from 'react-icons/fi';
 import { gradientPresets } from '../../data/tools/gradients.js';
 
 const GradientGenerator = () => {
-  const [copied, setCopied] = useState({ css: false, html: false, both: false });
-  const [exportFormat, setExportFormat] = useState('both'); // 'css', 'html', 'both'
+  const [copied, setCopied] = useState({ css: false, html: false, tailwind: false, both: false });
+  const [exportFormat, setExportFormat] = useState('both'); // 'css', 'html', 'tailwind', 'both'
   const [gradientType, setGradientType] = useState('linear');
   const [angle, setAngle] = useState(90);
   const [colors, setColors] = useState([
@@ -49,6 +49,21 @@ const GradientGenerator = () => {
     }
   };
 
+  const generateTailwind = () => {
+    const colorStops = colors
+      .sort((a, b) => a.position - b.position)
+      .map(c => `${c.color}_${c.position}%`) // Underscores for spaces
+      .join(','); // No spaces after commas
+
+    if (gradientType === 'linear') {
+      return `bg-[linear-gradient(${angle}deg,${colorStops})]`;
+    } else if (gradientType === 'radial') {
+      return `bg-[radial-gradient(circle,${colorStops})]`;
+    } else {
+      return `bg-[conic-gradient(from_${angle}deg,${colorStops})]`;
+    }
+  };
+
   const generateHTML = () => {
     return `<div class="gradient-box"></div>`;
   };
@@ -69,6 +84,8 @@ const GradientGenerator = () => {
       textToCopy = generateFullCSS();
     } else if (type === 'html') {
       textToCopy = generateHTML();
+    } else if (type === 'tailwind') {
+      textToCopy = generateTailwind();
     } else {
       textToCopy = `<!-- HTML -->\n${generateHTML()}\n\n/* CSS */\n${generateFullCSS()}`;
     }
@@ -111,26 +128,46 @@ const GradientGenerator = () => {
    
             {/* Code Output */}
             <div className="mt-8 space-y-2 relative z-10">
-               {/* Export Format Tabs */}
-               <div className="flex items-center gap-2 mb-2">
-                 <span className="text-xs text-util-gray uppercase tracking-wider">Export:</span>
-                 {['both', 'html', 'css'].map((format) => (
-                   <button
-                     key={format}
-                     onClick={() => setExportFormat(format)}
-                     className={`px-3 py-1 rounded text-xs font-bold uppercase transition-all ${
-                       exportFormat === format
-                         ? 'bg-white text-black'
-                         : 'bg-white/10 text-util-gray hover:bg-white/20 hover:text-white'
-                     }`}
-                   >
-                     {format}
-                   </button>
-                 ))}
-               </div>
-   
-               {/* Code Blocks */}
-               {(exportFormat === 'both' || exportFormat === 'html') && (
+            {/* Export Format Tabs */}
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs text-util-gray uppercase tracking-wider">Export:</span>
+              {['both', 'html', 'css', 'tailwind'].map((format) => (
+                <button
+                  key={format}
+                  onClick={() => setExportFormat(format)}
+                  className={`px-3 py-1 rounded text-xs font-bold uppercase transition-all ${
+                    exportFormat === format
+                      ? 'bg-white text-black'
+                      : 'bg-white/10 text-util-gray hover:bg-white/20 hover:text-white'
+                  }`}
+                >
+                  {format}
+                </button>
+              ))}
+            </div>
+
+            {/* Code Blocks */}
+            {(exportFormat === 'both' || exportFormat === 'tailwind') && (
+              <div className="bg-[#0A0A0A] border border-white/10 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-util-gray uppercase tracking-wider flex items-center gap-2">
+                    <FiCode className="w-3 h-3" /> Tailwind
+                  </span>
+                  <button
+                    onClick={() => copyToClipboard('tailwind')}
+                    className="text-xs font-medium flex items-center gap-1.5 text-util-gray hover:text-white transition-colors px-2 py-1 hover:bg-white/10 rounded"
+                  >
+                    {copied.tailwind ? <FiCheck className="w-3 h-3 text-green-400" /> : <FiCopy className="w-3 h-3" />}
+                    {copied.tailwind ? 'Copied' : 'Copy'}
+                  </button>
+                </div>
+                <code className="text-xs sm:text-sm font-mono text-cyan-400 break-all bg-black/30 p-2 rounded block">
+                  {generateTailwind()}
+                </code>
+              </div>
+            )}
+
+            {(exportFormat === 'both' || exportFormat === 'html') && (
                  <div className="bg-[#0A0A0A] border border-white/10 rounded-lg p-4">
                    <div className="flex items-center justify-between mb-2">
                      <span className="text-xs font-bold text-util-gray uppercase tracking-wider flex items-center gap-2">

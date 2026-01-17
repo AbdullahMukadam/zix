@@ -1,14 +1,26 @@
 // Showcase Components Data Structure
+// This file contains showcase items for cool UI components, dashboards, hero sections, etc.
+// Each item can have:
+// - media: { type: 'video' | 'image', url: string } - for showcasing the component
+// - creator: { name: string, twitter: string } - attribution
+// - sourceUrl: (optional) link to original source if available
 
 export const showcaseComponents = [
-  // === NEW CREATIVE COMPONENTS ===
+  // === INTERACTIVE COMPONENTS (with code) ===
+  
   {
     id: 'handlebars',
     title: 'Handlebars Reveal',
-    description: 'Draggable handles that reveal hidden content with a smooth mask animation.',
-    category: 'creative',
-    framework: 'react-gsap',
-    tags: ['gsap', 'draggable', 'mask', 'interactive'],
+    description: 'Draggable handles that reveal hidden content with a smooth mask animation. Interactive GSAP-powered component.',
+    category: 'animations',
+    tags: ['gsap', 'draggable', 'mask', 'interactive', 'animation'],
+    media: null,
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    hasLivePreview: true,
+    sourceUrl: null,
     dependencies: ['gsap', 'react'],
     code: {
       jsx: `import React, { useRef, useEffect, useState } from "react";
@@ -17,7 +29,7 @@ import { Draggable } from "gsap/Draggable";
 
 gsap.registerPlugin(Draggable);
 
-export default function Handlebars({ children }) {
+const Handlebars = ({ children }) => {
   const containerRef = useRef(null);
   const leftHandleRef = useRef(null);
   const rightHandleRef = useRef(null);
@@ -101,168 +113,235 @@ export default function Handlebars({ children }) {
       </div>
     </div>
   );
-}`,
-      css: null,
-      html: null
+};
+
+export default Handlebars;`,
     }
+  },
+  {
+    id: 'ecommerce-hero',
+    title: 'E-commerce Hero Section',
+    description: 'Made an Ecommerce hero section made using React and Tailwind, framer motion, gsap PS: Design is not mine, dm for credits.',
+    category: 'hero-sections',
+    tags: ['react', 'tailwind', 'framer-motion', 'gsap', 'ecommerce'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767790957/e-commerce-design-new-1767790768736_jdiqox.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/metaverse',
+    demoUrl: 'https://2dverse.vercel.app/',
   },
 
   {
-    id: 'spotlight-card',
-    title: 'Spotlight Card',
-    description: 'Card with a mouse-following radial gradient glow effect.',
+    id: 'cool-cards',
+    title: 'Cool Cards',
+    description: 'Made cool cards using react, tailwind and framer motion.',
     category: 'cards',
-    framework: 'tailwind',
-    tags: ['hover', 'gradient', 'mouse-tracking', 'modern'],
-    dependencies: ['react'],
-    code: {
-      jsx: `import { useRef, useState } from "react";
-
-export default function SpotlightCard() {
-  const divRef = useRef(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
-
-  const handleMouseMove = (e) => {
-    if (!divRef.current || isFocused) return;
-    const div = divRef.current;
-    const rect = div.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  return (
-    <div
-      ref={divRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setOpacity(1)}
-      onMouseLeave={() => setOpacity(0)}
-      className="relative flex h-48 w-full max-w-sm flex-col items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-black px-8 py-16 shadow-2xl"
-    >
-      <div
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
-        style={{
-          opacity,
-          background: \`radial-gradient(600px circle at \${position.x}px \${position.y}px, rgba(255,255,255,0.1), transparent 40%)\`,
-        }}
-      />
-      <div className="relative z-10 text-center">
-        <h3 className="mb-2 text-xl font-bold text-white">Spotlight Effect</h3>
-        <p className="text-sm text-gray-400">Hover me!</p>
-      </div>
-    </div>
-  );
-}`,
-      css: null,
-      html: null
-    }
+    tags: ['react', 'tailwind', 'framer-motion', 'interactive'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1768634481/new_card-1768040847287_p213hm.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/metaverse',
+    demoUrl: 'https://2dverse.vercel.app/',
   },
 
   {
-    id: 'magnetic-button',
-    title: 'Magnetic Button',
-    description: 'Interactive button that follows your cursor with smooth animations.',
-    category: 'buttons',
-    framework: 'react-framer',
-    tags: ['interactive', 'animation', 'hover', 'physics'],
-    dependencies: ['framer-motion'],
-    code: {
-      jsx: `import { motion } from 'framer-motion';
-import { useState, useRef } from 'react';
-
-export default function MagneticButton() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const buttonRef = useRef(null);
-
-  const handleMouseMove = (e) => {
-    if (!buttonRef.current) return;
-    const rect = buttonRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const distanceX = e.clientX - centerX;
-    const distanceY = e.clientY - centerY;
-    setPosition({ x: distanceX * 0.3, y: distanceY * 0.3 });
-  };
-
-  const handleMouseLeave = () => {
-    setPosition({ x: 0, y: 0 });
-  };
-
-  return (
-    <motion.button
-      ref={buttonRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      animate={{ x: position.x, y: position.y }}
-      transition={{ type: 'spring', stiffness: 150, damping: 15 }}
-      className="px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform"
-    >
-      Hover Me
-    </motion.button>
-  );
-}`,
-      css: null,
-      html: null
-    }
+    id: 'simple-dashboard',
+    title: 'Simple Dashboard UI',
+    description: 'Simple Dashboard UI made using React and Tailwind, PS: Design is not mine, dm for credits.',
+    category: 'dashboards',
+    tags: ['react', 'typescript', 'tailwind', 'recharts', 'dashboard'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604625/2025-12-07_10-15-09_rejykt.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/metaverse',
+    demoUrl: 'https://2dverse.vercel.app/',
   },
 
   {
-    id: 'gradient-border-button',
-    title: 'Gradient Border Button',
-    description: 'Button with animated gradient border effect.',
-    category: 'buttons',
-    framework: 'tailwind',
-    tags: ['gradient', 'border', 'animation'],
-    dependencies: ['tailwindcss'],
-    code: {
-      jsx: `export default function GradientBorderButton() {
-  return (
-    <div className="relative group">
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
-      <button className="relative px-7 py-4 bg-black rounded-lg leading-none flex items-center">
-        <span className="text-white font-bold">Click Me</span>
-      </button>
-    </div>
-  );
-}`,
-      css: `@keyframes tilt {
-  0%, 50%, 100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(1deg);
-  }
-  75% {
-    transform: rotate(-1deg);
-  }
-}
+    id: 'modern-dashboard',
+    title: 'Modern Dashboard UI',
+    description: 'A modern dashboard interface with clean design and smooth animations.',
+    category: 'dashboards',
+    tags: ['react', 'tailwind', 'framer-motion', 'dashboard'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604463/dashboard-new-1767292231122_hqrud4.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/Job-portal-app',
+    demoUrl: 'https://job-portal-app-test.vercel.app/',
+  },
 
-.animate-tilt {
-  animation: tilt 10s infinite linear;
-}`,
-      html: `<div class="relative group">
-  <div class="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
-  <button class="relative px-7 py-4 bg-black rounded-lg leading-none">
-    <span class="text-white font-bold">Click Me</span>
-  </button>
-</div>`
-    }
-  }
+  {
+    id: 'portfolio-template',
+    title: 'Portfolio Template',
+    description: 'Created this Single Page Portfolio Template using react, Framer Motion.',
+    category: 'landing-pages',
+    tags: ['react', 'tailwind', 'framer-motion', 'portfolio'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1768145506/new-portfolio-template-1768142541551_io3p0d.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/Job-portal-app',
+    demoUrl: 'https://job-portal-app-test.vercel.app/',
+  },
+
+  {
+    id: 'studioflow-dashboard',
+    title: 'StudioFlow Dashboard',
+    description: 'The dashboard from my StudioFlow Project.',
+    category: 'dashboards',
+    tags: ['react', 'typescript', 'tailwind', 'recharts', 'dashboard'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604421/studioflow-video_1_eo6wxu.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/metaverse',
+    demoUrl: 'https://2dverse.vercel.app/',
+  },
+
+  {
+    id: 'isthover-landing',
+    title: 'IstHover Landing Page',
+    description: "Simple Landing page created for my friend's opensource project.",
+    category: 'landing-pages',
+    tags: ['react', 'typescript', 'tailwind', 'landing-page'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1768634850/isthover-concept-1768304475476_qas865.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/metaverse',
+    demoUrl: 'https://2dverse.vercel.app/',
+  },
+
+  {
+    id: 'mobile-card',
+    title: 'Mobile Screen Card',
+    description: 'Simple mobile screen recreated using Anthropic. PS: Design is not mine, dm for credits.',
+    category: 'cards',
+    tags: ['react', 'tailwind', 'framer-motion', 'mobile'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604446/new-component-1767453250333_jx6inh.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/QuestlyAi',
+    demoUrl: 'https://questly-ai.vercel.app/',
+  },
+
+  {
+    id: 'email-component',
+    title: 'Email Card Component',
+    description: 'Email Card Component using Tailwind. Designed by Rico.',
+    category: 'cards',
+    tags: ['react', 'tailwind', 'email', 'ui'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604443/2025-12-15_07-48-34_cfjzqy.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/web_voice_assistant',
+    demoUrl: null,
+  },
+
+  {
+    id: 'saas-landing',
+    title: 'SaaS Landing Page',
+    description: 'An SaaS Landing Page made using Framer, Tailwind, etc.',
+    category: 'landing-pages',
+    tags: ['react', 'tailwind', 'framer-motion', 'saas'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604096/1755107894672_eerimd.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/Woman-Safety-App',
+    demoUrl: 'https://woman-safety-app.vercel.app/',
+  },
+
+  {
+    id: 'mobile-ui',
+    title: 'Mobile UI',
+    description: 'Clean mobile interface design with smooth interactions.',
+    category: 'mobile-ui',
+    tags: ['react', 'tailwind', 'mobile', 'ui'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604447/2025-12-14_04-06-55_rxahty.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/Portfolio-Website-Builder',
+    demoUrl: 'https://portfolio-website-builder.vercel.app',
+  },
+
+  {
+    id: 'retro-portfolio',
+    title: 'Retro Portfolio UI',
+    description: 'Created an Retro styled Portfolio.',
+    category: 'landing-pages',
+    tags: ['react', 'tailwind', 'gsap', 'retro', 'portfolio'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604409/portfolio-new-1765964106840_1_txpcke.mp4',
+    },
+    creator: {
+      name: 'Abdullah Mukadam',
+      twitter: '@abd_mukadam',
+    },
+    sourceUrl: 'https://github.com/AbdullahMukadam/Superman',
+    demoUrl: null,
+  },
 ];
 
 // Categories for filtering
 export const categories = [
-  { id: 'all', label: 'All Components', count: showcaseComponents.length },
-  { id: 'creative', label: 'Creative', count: showcaseComponents.filter(c => c.category === 'creative').length },
-  { id: 'buttons', label: 'Buttons', count: showcaseComponents.filter(c => c.category === 'buttons').length },
+  { id: 'all', label: 'All', count: showcaseComponents.length },
+  { id: 'dashboards', label: 'Dashboards', count: showcaseComponents.filter(c => c.category === 'dashboards').length },
+  { id: 'hero-sections', label: 'Hero Sections', count: showcaseComponents.filter(c => c.category === 'hero-sections').length },
+  { id: 'landing-pages', label: 'Landing Pages', count: showcaseComponents.filter(c => c.category === 'landing-pages').length },
   { id: 'cards', label: 'Cards', count: showcaseComponents.filter(c => c.category === 'cards').length },
-];
-
-// Frameworks for filtering
-export const frameworks = [
-  { id: 'all', label: 'All Frameworks', icon: '🎨' },
-  { id: 'react', label: 'React', icon: '⚛️' },
-  { id: 'react-framer', label: 'React + Framer', icon: '🎭' },
-  { id: 'react-gsap', label: 'React + GSAP', icon: '💚' },
-  { id: 'tailwind', label: 'Tailwind', icon: '🎨' },
+  { id: 'mobile-ui', label: 'Mobile UI', count: showcaseComponents.filter(c => c.category === 'mobile-ui').length },
+  { id: 'animations', label: 'Animations', count: showcaseComponents.filter(c => c.category === 'animations').length },
 ];

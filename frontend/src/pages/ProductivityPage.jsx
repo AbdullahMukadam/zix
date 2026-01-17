@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FiSearch, FiExternalLink, FiGlobe } from 'react-icons/fi';
 import { productivityTools, toolCategories } from '../data/productivity/tools.js';
+import Pagination from '../components/common/Pagination.jsx';
 import SEO from '../components/common/SEO.jsx';
+
+const ITEMS_PER_PAGE = 9;
 
 const ProductivityPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredTools = productivityTools.filter(tool => {
-    const matchesSearch = tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          tool.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesCategory = activeCategory === 'all' || tool.category === activeCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const filteredTools = useMemo(() => {
+    return productivityTools.filter(tool => {
+      const matchesSearch = tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            tool.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesCategory = activeCategory === 'all' || tool.category === activeCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchQuery, activeCategory]);
+
+  // Reset to page 1 when filters change
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [searchQuery, activeCategory]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredTools.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedTools = filteredTools.slice(startIndex, endIndex);
 
   return (
     <div className="min-h-screen bg-[#020202] text-white pt-16 relative font-sans selection:bg-util-accent selection:text-black">
@@ -85,8 +102,8 @@ const ProductivityPage = () => {
       {/* Content */}
       <div className="max-w-[1400px] mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fadeIn">
-          {filteredTools.length > 0 ? (
-            filteredTools.map(tool => (
+          {paginatedTools.length > 0 ? (
+            paginatedTools.map(tool => (
               <a 
                 key={tool.id} 
                 href={tool.url}
@@ -138,6 +155,15 @@ const ProductivityPage = () => {
             </div>
           )}
         </div>
+        
+        {/* Pagination */}
+        {filteredTools.length > 0 && (
+          <Pagination 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}
       </div>
     </div>
   );

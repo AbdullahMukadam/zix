@@ -14,7 +14,7 @@ export const initiateGitHubOAuth = () => {
 
 export const handleOAuthCallback = async (code) => {
   try {
-    const response = await fetch("http://localhost:5000/auth/github", {
+    const response = await fetch(`${GITHUB_CONFIG.tokenUrl}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

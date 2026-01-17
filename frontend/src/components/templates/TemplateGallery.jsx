@@ -1,15 +1,19 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTemplates } from '../../hooks/useTemplates.js';
 import { useTemplate } from '../../context/TemplateContext.jsx';
 import TemplateCard from './TemplateCard.jsx';
 import TemplateFilters from './TemplateFilters.jsx';
+import Pagination from '../common/Pagination.jsx';
 import { FiSearch, FiLoader, FiAlertCircle } from 'react-icons/fi';
+
+const ITEMS_PER_PAGE = 9;
 
 const TemplateGallery = () => {
   const { templates, filteredTemplates, loading, error, filter, setFilter } = useTemplates();
   const { selectTemplate } = useTemplate();
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [currentPage, setCurrentPage] = React.useState(1);
 
   const handleTemplateSelect = (template) => {
     selectTemplate(template);
@@ -27,6 +31,17 @@ const TemplateGallery = () => {
   };
 
   const displayedTemplates = getSearchFilteredTemplates();
+
+  // Reset to page 1 when filters change
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filter]);
+
+  // Pagination
+  const totalPages = Math.ceil(displayedTemplates.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedTemplates = displayedTemplates.slice(startIndex, endIndex);
 
   if (loading) {
     return (
@@ -119,15 +134,25 @@ const TemplateGallery = () => {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {displayedTemplates.map(template => (
-                  <TemplateCard
-                    key={template.id}
-                    template={template}
-                    onSelect={handleTemplateSelect}
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {paginatedTemplates.map(template => (
+                    <TemplateCard
+                      key={template.id}
+                      template={template}
+                      onSelect={handleTemplateSelect}
+                    />
+                  ))}
+                </div>
+                
+                {displayedTemplates.length > 0 && (
+                  <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
                   />
-                ))}
-              </div>
+                )}
+              </>
             )}
           </div>
         </div>

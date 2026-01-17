@@ -5,7 +5,7 @@ import { Draggable } from "gsap/Draggable";
 // Register the Draggable plugin with GSAP
 gsap.registerPlugin(Draggable);
 
-const Handlebars = ({ children }) => {
+export const Handlebars = ({ children, className = "w-64 md:w-80 h-16" }) => {
   // Refs for the elements we'll be animating or interacting with
   const containerRef = useRef(null);
   const leftHandleRef = useRef(null);
@@ -142,10 +142,10 @@ const Handlebars = ({ children }) => {
   }, [width]);
 
   return (
-    <div className="flex justify-center gap-4 py-10 w-full">
+    <div className="flex justify-center gap-4 w-full">
       <div
         ref={containerRef}
-        className="relative -rotate-[2.76deg] mt-0.5 w-64 md:w-80 h-16"
+        className={`relative -rotate-[2.76deg] mt-0.5 ${className}`}
       >
         {/* The main container for the content and handles */}
         <div className="absolute inset-0 w-full h-full rounded-full border border-yellow-500/50 flex justify-between z-10 pointer-events-none">
@@ -173,7 +173,7 @@ const Handlebars = ({ children }) => {
           ref={contentRef}
           className="absolute inset-0 flex items-center justify-center w-full h-full px-9 bg-[#1a1a1a] rounded-full border border-white/10 text-white font-bold text-lg whitespace-nowrap overflow-hidden"
         >
-          {children || "Drag handles to reveal"}
+          {children}
         </span>
 
       </div>
@@ -182,11 +182,11 @@ const Handlebars = ({ children }) => {
 };
 
 // Default export for the showcase preview
-const HandlebarsPreview = () => {
+export const HandlebarsPreview = () => {
   return (
     <div className="w-full h-64 flex justify-center items-center rounded-lg p-4">
       <Handlebars>
-        <span className="text-6xl text-yellow-400 md:text-6xl font-extrabold tracking-tighter">
+        <span className="text-6xl text-white md:text-6xl font-extrabold tracking-tighter">
           DRAG ME
         </span>
       </Handlebars>
@@ -194,4 +194,16 @@ const HandlebarsPreview = () => {
   );
 };
 
-export default HandlebarsPreview;
+export const HandlebarsLandingPage = ({ children }) => {
+  return (
+    <div className="w-full h-fit rounded-lg mt-1">
+      <Handlebars className="w-[360px] md:w-[510px] h-20">
+        <span className="text-6xl md:text-8xl text-white">
+          {children}
+        </span>
+      </Handlebars>
+    </div>
+  );
+};
+
+

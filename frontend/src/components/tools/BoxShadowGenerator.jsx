@@ -3,7 +3,7 @@ import { FiCopy, FiCheck, FiCode } from 'react-icons/fi';
 import { shadowPresets } from '../../data/tools/shadows.js';
 
 const BoxShadowGenerator = () => {
-  const [copied, setCopied] = useState({ css: false, html: false, both: false });
+  const [copied, setCopied] = useState({ css: false, html: false, tailwind: false, both: false });
   const [exportFormat, setExportFormat] = useState('both');
   const [shadows, setShadows] = useState([
     {
@@ -45,6 +45,20 @@ const BoxShadowGenerator = () => {
     return `rgba(${r}, ${g}, ${b}, ${opacity})`;
   };
 
+  const generateTailwind = () => {
+    return shadows
+      .map(shadow => {
+        const rgba = hexToRgba(shadow.color, shadow.opacity);
+        // Replace spaces with underscores and remove spaces around commas for Tailwind JIT syntax
+        const colorString = rgba.replace(/\s+/g, '');
+        const inset = shadow.inset ? 'inset_' : '';
+        // Format: horizontal vertical blur spread color
+        // shadow-[inset_0_10px_20px_0_rgba(0,0,0,0.5)]
+        return `shadow-[${inset}${shadow.horizontal}px_${shadow.vertical}px_${shadow.blur}px_${shadow.spread}px_${colorString}]`;
+      })
+      .join(' ');
+  };
+
   const generateHTML = () => {
     return `<div class="shadow-box"></div>`;
   };
@@ -66,6 +80,8 @@ const BoxShadowGenerator = () => {
       textToCopy = generateFullCSS();
     } else if (type === 'html') {
       textToCopy = generateHTML();
+    } else if (type === 'tailwind') {
+      textToCopy = generateTailwind();
     } else {
       textToCopy = `<!-- HTML -->\n${generateHTML()}\n\n/* CSS */\n${generateFullCSS()}`;
     }
@@ -101,7 +117,7 @@ const BoxShadowGenerator = () => {
             {/* Export Format Tabs */}
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs text-util-gray uppercase tracking-wider">Export:</span>
-              {['both', 'html', 'css'].map((format) => (
+              {['both', 'html', 'css', 'tailwind'].map((format) => (
                 <button
                   key={format}
                   onClick={() => setExportFormat(format)}
@@ -117,6 +133,26 @@ const BoxShadowGenerator = () => {
             </div>
 
             {/* Code Blocks */}
+            {(exportFormat === 'both' || exportFormat === 'tailwind') && (
+              <div className="bg-[#0A0A0A] border border-white/10 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-util-gray uppercase tracking-wider flex items-center gap-2">
+                    <FiCode className="w-3 h-3" /> Tailwind
+                  </span>
+                  <button
+                    onClick={() => copyToClipboard('tailwind')}
+                    className="text-xs font-medium flex items-center gap-1.5 text-util-gray hover:text-white transition-colors px-2 py-1 hover:bg-white/10 rounded"
+                  >
+                    {copied.tailwind ? <FiCheck className="w-3 h-3 text-green-400" /> : <FiCopy className="w-3 h-3" />}
+                    {copied.tailwind ? 'Copied' : 'Copy'}
+                  </button>
+                </div>
+                <code className="text-xs sm:text-sm font-mono text-cyan-400 break-all bg-black/30 p-2 rounded block">
+                  {generateTailwind()}
+                </code>
+              </div>
+            )}
+
             {(exportFormat === 'both' || exportFormat === 'html') && (
               <div className="bg-[#0A0A0A] border border-white/10 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
