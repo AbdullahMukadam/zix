@@ -9,7 +9,8 @@ export const tailwindCategories = [
   { id: 'inputs', label: 'Inputs' },
   { id: 'loaders', label: 'Loaders' },
   { id: 'feedback', label: 'Feedback' },
-  { id: 'badges', label: 'Badges' }
+  { id: 'badges', label: 'Badges' },
+  { id: 'typography', label: 'Typography' }
 ];
 
 export const tailwindComponents = [
@@ -488,6 +489,129 @@ export default function SpotlightCard() {
           <span className="w-1.5 h-1.5 bg-red-400 rounded-full mr-1.5"></span>
           Error
         </span>
+      </div>
+    )
+  },
+  {
+    id: 'text-gradient',
+    title: 'Animated Gradient Text',
+    category: 'typography',
+    code: `<div className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-text">
+  Gradient Text
+</div>
+
+/* Add to tailwind.config.js theme.extend.keyframes:
+  text: {
+    '0%, 100%': {
+      'background-size': '200% 200%',
+      'background-position': 'left center'
+    },
+    '50%': {
+      'background-size': '200% 200%',
+      'background-position': 'right center'
+    },
+  },
+*/`,
+    preview: () => (
+      <div className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 animate-pulse">
+        Gradient Text
+      </div>
+    )
+  },
+  {
+    id: 'text-glitch',
+    title: 'Glitch Text',
+    category: 'typography',
+    code: `<div className="relative font-mono font-bold text-4xl text-white group">
+  <span className="absolute top-0 left-0 -ml-[2px] text-red-500 opacity-70 animate-pulse">Glitch</span>
+  <span className="absolute top-0 left-0 -ml-[1px] text-blue-500 opacity-70 animate-pulse delay-75">Glitch</span>
+  <span className="relative">Glitch</span>
+</div>`,
+    preview: () => (
+      <div className="relative font-mono font-bold text-4xl text-white group select-none">
+        <span className="absolute top-0 left-0 translate-x-[2px] text-red-500 opacity-70 animate-pulse">Glitch</span>
+        <span className="absolute top-0 left-0 -translate-x-[2px] text-blue-500 opacity-70 animate-pulse delay-75">Glitch</span>
+        <span className="relative">Glitch</span>
+      </div>
+    )
+  },
+  {
+    id: 'card-flip',
+    title: '3D Flip Card',
+    category: 'cards',
+    code: `<div className="group w-64 h-96 [perspective:1000px]">
+  <div className="relative w-full h-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+    {/* Front */}
+    <div className="absolute inset-0 w-full h-full bg-[#111] border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center [backface-visibility:hidden]">
+      <h3 className="text-xl font-bold text-white">Hover Me</h3>
+    </div>
+    {/* Back */}
+    <div className="absolute inset-0 w-full h-full bg-blue-600 rounded-xl p-6 flex flex-col items-center justify-center [transform:rotateY(180deg)] [backface-visibility:hidden]">
+      <p className="text-white text-center">Hello from the other side!</p>
+    </div>
+  </div>
+</div>`,
+    preview: () => (
+      <div className="group w-48 h-64 [perspective:1000px]">
+        <div className="relative w-full h-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+          {/* Front */}
+          <div className="absolute inset-0 w-full h-full bg-[#111] border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center [backface-visibility:hidden]">
+            <h3 className="text-xl font-bold text-white">Hover Me</h3>
+          </div>
+          {/* Back */}
+          <div className="absolute inset-0 w-full h-full bg-blue-600 rounded-xl p-6 flex flex-col items-center justify-center [transform:rotateY(180deg)] [backface-visibility:hidden]">
+            <p className="text-white text-center font-bold">Revealed!</p>
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    id: 'btn-neumorphic',
+    title: 'Neumorphic Button',
+    category: 'buttons',
+    code: `<button className="px-8 py-4 bg-[#e0e0e0] text-[#4a4a4a] font-bold rounded-xl shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff] hover:shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff] transition-all active:scale-95">
+  Neumorphic
+</button>`,
+    preview: () => (
+      <div className="p-8 bg-[#e0e0e0] rounded-xl flex items-center justify-center">
+        <button className="px-8 py-4 bg-[#e0e0e0] text-[#4a4a4a] font-bold rounded-xl shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff] hover:shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff] transition-all active:scale-95">
+          Neumorphic
+        </button>
+      </div>
+    )
+  },
+  {
+    id: 'btn-cyberpunk',
+    title: 'Cyberpunk Button',
+    category: 'buttons',
+    code: `<button className="relative px-6 py-3 font-bold text-white group">
+  <span className="absolute inset-0 w-full h-full transition duration-300 ease-out transform -translate-x-2 -translate-y-2 bg-red-500 group-hover:translate-x-0 group-hover:translate-y-0"></span>
+  <span className="absolute inset-0 w-full h-full border-2 border-white group-hover:bg-white/10"></span>
+  <span className="relative">CYBERPUNK</span>
+</button>`,
+    preview: () => (
+      <button className="relative px-6 py-3 font-bold text-white group">
+        <span className="absolute inset-0 w-full h-full transition duration-300 ease-out transform -translate-x-2 -translate-y-2 bg-red-500 group-hover:translate-x-0 group-hover:translate-y-0"></span>
+        <span className="absolute inset-0 w-full h-full border-2 border-white group-hover:bg-white/10"></span>
+        <span className="relative">CYBERPUNK</span>
+      </button>
+    )
+  },
+  {
+    id: 'card-glass-2',
+    title: 'Frosted Glass Card',
+    category: 'cards',
+    code: `<div className="relative w-64 h-40 overflow-hidden rounded-xl bg-white/10 border border-white/20 backdrop-blur-lg shadow-xl flex items-center justify-center">
+  <div className="absolute -top-10 -left-10 w-20 h-20 bg-purple-500 rounded-full blur-xl opacity-50 animate-pulse"></div>
+  <div className="absolute -bottom-10 -right-10 w-20 h-20 bg-blue-500 rounded-full blur-xl opacity-50 animate-pulse delay-75"></div>
+  <p className="relative z-10 font-bold text-white text-lg tracking-widest uppercase">FROSTED</p>
+</div>`,
+    preview: () => (
+      <div className="relative w-64 h-40 overflow-hidden rounded-xl bg-white/10 border border-white/20 backdrop-blur-lg shadow-xl flex items-center justify-center">
+        <div className="absolute -top-10 -left-10 w-20 h-20 bg-purple-500 rounded-full blur-xl opacity-50 animate-pulse"></div>
+        <div className="absolute -bottom-10 -right-10 w-20 h-20 bg-blue-500 rounded-full blur-xl opacity-50 animate-pulse delay-75"></div>
+        <p className="relative z-10 font-bold text-white text-lg tracking-widest uppercase">FROSTED</p>
       </div>
     )
   }

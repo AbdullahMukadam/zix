@@ -38,6 +38,26 @@
       ]
     },
     {
+      "id": "brutalist-resume-1",
+      "name": "Brutalist Editorial Resume",
+      "description": "High-end, grid-heavy editorial layout resembling a fashion magazine with GSAP animations",
+      "category": "portfolio",
+      "type": "html",
+      "repoUrl": "https://github.com/AbdullahMukadam/new-templates",
+      "folder": "brutalist-resume",
+      "branch": "main",
+      "enabled": true,
+      "featured": true,
+      "thumbnail": "/resume-template.PNG",
+      "tags": [
+        "portfolio",
+        "creative",
+        "resume",
+        "vintage",
+        "developer"
+      ]
+    },
+    {
       "id": "fitness-rhinos",
       "name": "Fitness Rhinos - Gym & Fitness",
       "description": "Bold fitness/gym landing page with animated UI, pricing plans, facilities showcase, and modern orange/black design",

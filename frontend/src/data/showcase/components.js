@@ -132,8 +132,25 @@ export default Handlebars;`,
       name: 'Abdullah Mukadam',
       twitter: '@abd_mukadam',
     },
-    sourceUrl: 'https://github.com/AbdullahMukadam/metaverse',
-    demoUrl: 'https://2dverse.vercel.app/',
+    sourceUrl: null,
+    demoUrl: null,
+  },
+  {
+    id: 'mini-tv',
+    title: 'Animated Tv',
+    description: 'Made an lil Animated Tv Icon.',
+    category: 'animations',
+    tags: ['react', 'tailwind', 'framer-motion'],
+    media: {
+      type: 'video',
+      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1768730182/shawn_dgtafx.mp4',
+    },
+    creator: {
+      name: 'Shawn',
+      twitter: '@zzzzshawn',
+    },
+    sourceUrl: null,
+    demoUrl: null,
   },
 
   {
@@ -150,172 +167,9 @@ export default Handlebars;`,
       name: 'Abdullah Mukadam',
       twitter: '@abd_mukadam',
     },
-    sourceUrl: 'https://github.com/AbdullahMukadam/metaverse',
-    demoUrl: 'https://2dverse.vercel.app/',
-  },
-
-  {
-    id: 'simple-dashboard',
-    title: 'Simple Dashboard UI',
-    description: 'Simple Dashboard UI made using React and Tailwind, PS: Design is not mine, dm for credits.',
-    category: 'dashboards',
-    tags: ['react', 'typescript', 'tailwind', 'recharts', 'dashboard'],
-    media: {
-      type: 'video',
-      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604625/2025-12-07_10-15-09_rejykt.mp4',
-    },
-    creator: {
-      name: 'Abdullah Mukadam',
-      twitter: '@abd_mukadam',
-    },
-    sourceUrl: 'https://github.com/AbdullahMukadam/metaverse',
-    demoUrl: 'https://2dverse.vercel.app/',
-  },
-
-  {
-    id: 'modern-dashboard',
-    title: 'Modern Dashboard UI',
-    description: 'A modern dashboard interface with clean design and smooth animations.',
-    category: 'dashboards',
-    tags: ['react', 'tailwind', 'framer-motion', 'dashboard'],
-    media: {
-      type: 'video',
-      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604463/dashboard-new-1767292231122_hqrud4.mp4',
-    },
-    creator: {
-      name: 'Abdullah Mukadam',
-      twitter: '@abd_mukadam',
-    },
-    sourceUrl: 'https://github.com/AbdullahMukadam/Job-portal-app',
-    demoUrl: 'https://job-portal-app-test.vercel.app/',
-  },
-
-  {
-    id: 'portfolio-template',
-    title: 'Portfolio Template',
-    description: 'Created this Single Page Portfolio Template using react, Framer Motion.',
-    category: 'landing-pages',
-    tags: ['react', 'tailwind', 'framer-motion', 'portfolio'],
-    media: {
-      type: 'video',
-      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1768145506/new-portfolio-template-1768142541551_io3p0d.mp4',
-    },
-    creator: {
-      name: 'Abdullah Mukadam',
-      twitter: '@abd_mukadam',
-    },
-    sourceUrl: 'https://github.com/AbdullahMukadam/Job-portal-app',
-    demoUrl: 'https://job-portal-app-test.vercel.app/',
-  },
-
-  {
-    id: 'studioflow-dashboard',
-    title: 'StudioFlow Dashboard',
-    description: 'The dashboard from my StudioFlow Project.',
-    category: 'dashboards',
-    tags: ['react', 'typescript', 'tailwind', 'recharts', 'dashboard'],
-    media: {
-      type: 'video',
-      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604421/studioflow-video_1_eo6wxu.mp4',
-    },
-    creator: {
-      name: 'Abdullah Mukadam',
-      twitter: '@abd_mukadam',
-    },
-    sourceUrl: 'https://github.com/AbdullahMukadam/metaverse',
-    demoUrl: 'https://2dverse.vercel.app/',
-  },
-
-  {
-    id: 'isthover-landing',
-    title: 'IstHover Landing Page',
-    description: "Simple Landing page created for my friend's opensource project.",
-    category: 'landing-pages',
-    tags: ['react', 'typescript', 'tailwind', 'landing-page'],
-    media: {
-      type: 'video',
-      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1768634850/isthover-concept-1768304475476_qas865.mp4',
-    },
-    creator: {
-      name: 'Abdullah Mukadam',
-      twitter: '@abd_mukadam',
-    },
-    sourceUrl: 'https://github.com/AbdullahMukadam/metaverse',
-    demoUrl: 'https://2dverse.vercel.app/',
-  },
-
-  {
-    id: 'mobile-card',
-    title: 'Mobile Screen Card',
-    description: 'Simple mobile screen recreated using Anthropic. PS: Design is not mine, dm for credits.',
-    category: 'cards',
-    tags: ['react', 'tailwind', 'framer-motion', 'mobile'],
-    media: {
-      type: 'video',
-      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604446/new-component-1767453250333_jx6inh.mp4',
-    },
-    creator: {
-      name: 'Abdullah Mukadam',
-      twitter: '@abd_mukadam',
-    },
-    sourceUrl: 'https://github.com/AbdullahMukadam/QuestlyAi',
-    demoUrl: 'https://questly-ai.vercel.app/',
-  },
-
-  {
-    id: 'email-component',
-    title: 'Email Card Component',
-    description: 'Email Card Component using Tailwind. Designed by Rico.',
-    category: 'cards',
-    tags: ['react', 'tailwind', 'email', 'ui'],
-    media: {
-      type: 'video',
-      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604443/2025-12-15_07-48-34_cfjzqy.mp4',
-    },
-    creator: {
-      name: 'Abdullah Mukadam',
-      twitter: '@abd_mukadam',
-    },
-    sourceUrl: 'https://github.com/AbdullahMukadam/web_voice_assistant',
+    sourceUrl: null,
     demoUrl: null,
   },
-
-  {
-    id: 'saas-landing',
-    title: 'SaaS Landing Page',
-    description: 'An SaaS Landing Page made using Framer, Tailwind, etc.',
-    category: 'landing-pages',
-    tags: ['react', 'tailwind', 'framer-motion', 'saas'],
-    media: {
-      type: 'video',
-      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604096/1755107894672_eerimd.mp4',
-    },
-    creator: {
-      name: 'Abdullah Mukadam',
-      twitter: '@abd_mukadam',
-    },
-    sourceUrl: 'https://github.com/AbdullahMukadam/Woman-Safety-App',
-    demoUrl: 'https://woman-safety-app.vercel.app/',
-  },
-
-  {
-    id: 'mobile-ui',
-    title: 'Mobile UI',
-    description: 'Clean mobile interface design with smooth interactions.',
-    category: 'mobile-ui',
-    tags: ['react', 'tailwind', 'mobile', 'ui'],
-    media: {
-      type: 'video',
-      url: 'https://res.cloudinary.com/dhbs6k3ue/video/upload/v1767604447/2025-12-14_04-06-55_rxahty.mp4',
-    },
-    creator: {
-      name: 'Abdullah Mukadam',
-      twitter: '@abd_mukadam',
-    },
-    sourceUrl: 'https://github.com/AbdullahMukadam/Portfolio-Website-Builder',
-    demoUrl: 'https://portfolio-website-builder.vercel.app',
-  },
-
   {
     id: 'retro-portfolio',
     title: 'Retro Portfolio UI',
@@ -330,7 +184,7 @@ export default Handlebars;`,
       name: 'Abdullah Mukadam',
       twitter: '@abd_mukadam',
     },
-    sourceUrl: 'https://github.com/AbdullahMukadam/Superman',
+    sourceUrl: null,
     demoUrl: null,
   },
 ];

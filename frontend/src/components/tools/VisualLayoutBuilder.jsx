@@ -13,9 +13,22 @@ const VisualLayoutBuilder = () => {
   ]);
   
   const [selectedBox, setSelectedBox] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  
+  // Ref for drag state to avoid stale closures and re-renders during drag
+  const dragRef = useRef({
+    isDragging: false,
+    isResizing: false,
+    boxId: null,
+    startX: 0,
+    startY: 0,
+    initialX: 0,
+    initialY: 0,
+    initialWidth: 0,
+    initialHeight: 0,
+    offsetX: 0,
+    offsetY: 0
+  });
+
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 600 }); // dynamic width
 
   // Update canvas width on mount and resize
@@ -73,9 +86,10 @@ const VisualLayoutBuilder = () => {
   // Mouse handlers for drag and resize
   const handleMouseDown = (e, boxId, action = 'drag') => {
     e.stopPropagation();
+    e.preventDefault(); // Prevent text selection
     setSelectedBox(boxId);
     
-    // Calculate offset from the box's top-left corner
+    // Find box
     const box = boxes.find(b => b.id === boxId);
     if (!box) return;
 
@@ -83,81 +97,72 @@ const VisualLayoutBuilder = () => {
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
     
-    // For dragging, we store the offset of the mouse relative to the box corner
-    // This prevents the box from "snapping" to the mouse center
-    const offsetX = mouseX - box.x;
-    const offsetY = mouseY - box.y;
-    
-    setDragStart({ x: mouseX, y: mouseY, offsetX, offsetY });
-    
-    if (action === 'drag') {
-      setIsDragging(true);
-    } else if (action === 'resize') {
-      setIsResizing(true);
-    }
+    // Set drag state
+    dragRef.current = {
+      isDragging: action === 'drag',
+      isResizing: action === 'resize',
+      boxId: boxId,
+      startX: mouseX,
+      startY: mouseY,
+      initialX: box.x,
+      initialY: box.y,
+      initialWidth: box.width,
+      initialHeight: box.height,
+      offsetX: mouseX - box.x,
+      offsetY: mouseY - box.y
+    };
+
+    // Attach listeners
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
   };
 
   const handleMouseMove = (e) => {
-    if (!selectedBox) return;
+    if (!dragRef.current.isDragging && !dragRef.current.isResizing) return;
     
     const rect = canvasRef.current.getBoundingClientRect();
     const currentX = e.clientX - rect.left;
     const currentY = e.clientY - rect.top;
     
-    if (isDragging) {
-      const box = boxes.find(b => b.id === selectedBox);
-      if (!box) return;
+    setBoxes(prevBoxes => prevBoxes.map(box => {
+      if (box.id !== dragRef.current.boxId) return box;
 
-      const newX = currentX - dragStart.offsetX;
-      const newY = currentY - dragStart.offsetY;
+      if (dragRef.current.isDragging) {
+        // Calculate new position based on offset
+        const newX = currentX - dragRef.current.offsetX;
+        const newY = currentY - dragRef.current.offsetY;
+        return { ...box, x: newX, y: newY };
+      } 
+      
+      if (dragRef.current.isResizing) {
+        // Calculate delta from start
+        const deltaX = currentX - dragRef.current.startX;
+        const deltaY = currentY - dragRef.current.startY;
+        
+        return { 
+          ...box, 
+          width: Math.max(50, dragRef.current.initialWidth + deltaX),
+          height: Math.max(50, dragRef.current.initialHeight + deltaY)
+        };
+      }
 
-      setBoxes(boxes.map(b => {
-        if (b.id === selectedBox) {
-          return {
-            ...b,
-            x: newX,
-            y: newY,
-          };
-        }
-        return b;
-      }));
-    } else if (isResizing) {
-       const deltaX = currentX - dragStart.x;
-       const deltaY = currentY - dragStart.y;
-       
-       setBoxes(boxes.map(box => {
-        if (box.id === selectedBox) {
-          // We need to capture the initial dimensions to add delta correctly
-          // For simplicity in this functional update, we use a different approach usually
-          // But here, since we update state continuously, delta is from previous frame if we reset dragStart
-          // To make it smoother, usually we'd store initial dims in dragStart.
-          // Let's simplified: add delta to current width, then update dragStart
-          const newWidth = Math.max(50, box.width + (currentX - dragStart.x));
-          const newHeight = Math.max(50, box.height + (currentY - dragStart.y));
-          return { ...box, width: newWidth, height: newHeight };
-        }
-        return box;
-      }));
-      setDragStart({ ...dragStart, x: currentX, y: currentY });
-    }
+      return box;
+    }));
   };
 
   const handleMouseUp = () => {
-    setIsDragging(false);
-    setIsResizing(false);
+    dragRef.current = { ...dragRef.current, isDragging: false, isResizing: false, boxId: null };
+    window.removeEventListener('mousemove', handleMouseMove);
+    window.removeEventListener('mouseup', handleMouseUp);
   };
 
+  // Cleanup on unmount
   useEffect(() => {
-    if (isDragging || isResizing) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-      
-      return () => {
-        window.removeEventListener('mousemove', handleMouseMove);
-        window.removeEventListener('mouseup', handleMouseUp);
-      };
-    }
-  }, [isDragging, isResizing, selectedBox, dragStart]);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
 
   // Generate CSS based on container type
   const generateCSS = () => {
@@ -370,13 +375,15 @@ const VisualLayoutBuilder = () => {
                      backgroundColor: box.color,
                      borderRadius: '8px',
                      position: containerProps.display === 'absolute' ? 'absolute' : 'relative',
-                     left: containerProps.display === 'absolute' ? box.x : 'auto',
-                     top: containerProps.display === 'absolute' ? box.y : 'auto',
-                     cursor: isDragging ? 'grabbing' : 'grab',
-                     flexShrink: 0, // prevent shrinking in flex
-                   }}
-                   onMouseDown={(e) => handleMouseDown(e, box.id, 'drag')}
-                 >
+                      left: containerProps.display === 'absolute' ? box.x : 'auto',
+                      top: containerProps.display === 'absolute' ? box.y : 'auto',
+                      cursor: 'move', // Always show move cursor for boxes
+                      flexShrink: 0, // prevent shrinking in flex
+                    }}
+                    onMouseDown={(e) => handleMouseDown(e, box.id, 'drag')}
+                    onClick={(e) => e.stopPropagation()} // Prevent deselecting when clicking/dragging box
+                  >
+
                     {/* Box Label */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                        <span className="bg-black/50 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm font-mono">
@@ -402,6 +409,7 @@ const VisualLayoutBuilder = () => {
                         <div
                           className="absolute bottom-0 right-0 w-6 h-6 bg-white rounded-tl-lg cursor-se-resize flex items-center justify-center shadow-lg z-20 hover:bg-gray-100"
                           onMouseDown={(e) => handleMouseDown(e, box.id, 'resize')}
+                          onClick={(e) => e.stopPropagation()}
                         >
                           <FiMaximize2 className="w-3 h-3 text-black transform rotate-90" />
                         </div>
